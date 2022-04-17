@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import { userLogin } from "./redux/action/user";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "./supports/main.css";
+
+import Home from "./pages/Home";
+import NavHeader from "./component/NavHeader";
+import Posting from "./pages/Posting";
+import Login from "./pages/Login";
+import About from "./pages/About";
 
 function App() {
+  const dispatch = useDispatch();
+  const username = localStorage.getItem("username");
+
+  useEffect(() => {
+    dispatch(userLogin(username));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <NavHeader />
+        <Routes>
+          <Route element={<Posting />} path="/posting" />
+          <Route element={<Login />} path="/login" />
+          <Route element={<About />} path="/about" />
+          <Route element={<Home />} path="/" />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
